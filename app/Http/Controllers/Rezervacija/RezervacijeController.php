@@ -40,16 +40,22 @@ class RezervacijeController extends Controller
               ->where('datum','=',date('Y-m-d ', strtotime($request->get('datum'))))
               ->where('pocetak','<=',$request->get('pocetak'))
               ->where('kraj','>=',$request->get('pocetak'))
+              ->whereOr('pocetak','<=',$request->get('kraj'))
+              ->whereOr('kraj','>=',$request->get('kraj'))
               ->where('ucionica_id','=',$request->get('ucionica_id'))->exists()){
                 return redirect()->route('vasarez')->with('error','Rezervacija nije spremljena provjerite imate li dvije iste rezervacije');
               }elseif(Rezervacija::where('datum','=',date('Y-m-d ', strtotime($request->get('datum'))))
               ->where('pocetak','<=',$request->get('pocetak'))
               ->where('kraj','>=',$request->get('pocetak'))
+              ->whereOr('pocetak','<=',$request->get('kraj'))
+              ->whereOr('kraj','>=',$request->get('kraj'))
               ->where('ucionica_id','=',$request->get('ucionica_id'))->exists())
               {
                 return redirect()->route('vasarez')->with('error','Rezervacija nije spremljena provjerite je li učionica vec rezervirana u to vrijeme');
               }elseif(Rezervacija::where('user_id','=',$id)
               ->where('datum','=',date('Y-m-d ', strtotime($request->get('datum'))))
+              ->whereOr('pocetak','<=',$request->get('kraj'))
+              ->whereOr('kraj','>=',$request->get('kraj'))
               ->where('pocetak','<=',$request->get('pocetak'))
               ->where('kraj','>=',$request->get('pocetak'))->exists())
               {
@@ -127,26 +133,32 @@ class RezervacijeController extends Controller
         ->where('datum','=',date('Y-m-d ', strtotime($request->get('datum'))))
         ->where('pocetak','<=',$request->get('pocetak'))
         ->where('kraj','>=',$request->get('pocetak'))
+        ->whereOr('pocetak','<=',$request->get('kraj'))
+        ->whereOr('kraj','>=',$request->get('kraj'))
         ->where('ucionica_id','=',$request->get('ucionica_id'))->exists()){
           return redirect()->route('vasarez')->with('error','Rezervacija nije spremljena provjerite imate li dvije iste rezervacije');
         }elseif(Rezervacija::where('datum','=',date('Y-m-d ', strtotime($request->get('datum'))))
         ->where('pocetak','<=',$request->get('pocetak'))
         ->where('kraj','>=',$request->get('pocetak'))
+        ->whereOr('pocetak','<=',$request->get('kraj'))
+        ->whereOr('kraj','>=',$request->get('kraj'))
         ->where('ucionica_id','=',$request->get('ucionica_id'))->exists())
         {
           return redirect()->route('vasarez')->with('error','Rezervacija nije spremljena provjerite je li učionica već rezervirana u to vrijeme');
         }elseif(Rezervacija::where('user_id','=',$id)
         ->where('datum','=',date('Y-m-d ', strtotime($request->get('datum'))))
+        ->whereOr('pocetak','<=',$request->get('kraj'))
+        ->whereOr('kraj','>=',$request->get('kraj'))
         ->where('pocetak','<=',$request->get('pocetak'))
         ->where('kraj','>=',$request->get('pocetak'))->exists())
         {
           return redirect()->route('vasarez')->with('error','Rezervacija nije spremljena provjerite jeste li već rezervirali nešto u to vrijeme');
         }else{
-          $rezervacija->user_id=$request->user_id;
+          //$rezervacija->user_id=$request->user_id;
           $rezervacija->datum=date('Y-m-d ', strtotime($request->datum));
           $rezervacija->pocetak=$request->pocetak;
           $rezervacija->kraj=$request->kraj;
-          $rezervacija->ucionica_id=$request->user_id;
+          //$rezervacija->ucionica_id=$request->user_id;
     
             $rezervacija->save();
             return redirect()->route('vasarez')->with('success', 'rezervacija je azurirana');}

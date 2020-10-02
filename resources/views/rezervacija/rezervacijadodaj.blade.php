@@ -63,7 +63,7 @@
    <button type="submit" class="btn btn-primary">
                         Dodaj rezervaciju
                         </button>
-                        <a href="{{route('home')}}">
+                        <a href="{{route('vasarez')}}">
                         <button type="button" class="btn btn-primary">
                         Natrag
                         </button>

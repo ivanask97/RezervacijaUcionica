@@ -53,7 +53,9 @@
                                 <td>{{$rezervacija->ucionica->broj}}</td>
                                 <td>{{$rezervacija->ucionica->zgrada->mjesto}}</td>
                                 <td>
-                               
+                                @can('manage-users')
+                                    <a href="{{route('rezervacija.rezervacija.edit',$rezervacija->id)}}"><button type="button" class="btn btn-primary float-left">Uredi</button></a>
+                                @endcan 
                                 @can('manage-users')
                                     <form action="{{route('rezervacija.rezervacija.destroy',$rezervacija)}}" method="POST" class="float-left">
                                     @csrf
